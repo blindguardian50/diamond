@@ -368,13 +368,9 @@ export class CreateTestComponent implements OnInit {
   }
 
   saveTest(showPopup?) {
-    let passTmp = "";
-    if (this.studyPassword === "") {
-      passTmp = "empty";
-    } else {
-      passTmp = this.studyPassword;
-    }
-    const launchable: boolean = this.tasks.length > 0 ? true : false; 
+    const passTmp = this.studyPassword === '' ? 'empty' : this.studyPassword;
+    const launchable: boolean = this.tasks.length > 0;
+
     const test = {
         name: this.testName,
         launched: false,
@@ -394,40 +390,29 @@ export class CreateTestComponent implements OnInit {
         isLaunchable: launchable
     };
 
-    if(showPopup) {
+    const postKind = !this.id ? 'add' : 'edit';
+    this.postTestData(test, postKind)
+      .subscribe(
+        res => {
+          console.log(res);
+          this.id = this.id ?? this.randomTestId;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+
+    if (showPopup) {
       let lang = localStorage.getItem('tt-language');
       if (lang === 'en')
         alert("Saved!");
         else 
         alert("Gespeichert!");
       this.router.navigate(['/tests']);
-      }
-    if (!this.id) { // new test
-      this.postTestData(test)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.id = this.randomTestId;
-          
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    } else { // edit existing test
-      this.editTest(test)
-      .subscribe(
-        res => {
-          console.log(res);
-        },
-        err => {
-          console.log(err);
-        }
-      );
     }
   }
 
-  postTestData(object) {
+  postTestData(object, kind: 'add' | 'edit') {
     const header = new Headers({ Authorization: 'Bearer ' + (JSON.parse(localStorage.getItem('currentUser'))).token});
     const httpOptions = {
         headers: new HttpHeaders({
@@ -435,7 +420,7 @@ export class CreateTestComponent implements OnInit {
         Authorization: 'Bearer ' + (JSON.parse(localStorage.getItem('currentUser'))).token
       })
     };
-    return this.http.post(this.userService.serverUrl + '/users/tree-study/add', object, httpOptions);
+    return this.http.post(this.userService.serverUrl + `/users/tree-study/${kind}`, object, httpOptions);
   }
 
   testInformation(id) {
@@ -448,17 +433,6 @@ export class CreateTestComponent implements OnInit {
       })
   };
     return this.http.post(this.userService.serverUrl + '/users/tree-study/get', id, httpOptions);
-  }
-
-  editTest(object) {
-    const header = new Headers({ Authorization: 'Bearer ' + (JSON.parse(localStorage.getItem('currentUser'))).token});
-    const httpOptions = {
-        headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        Authorization: 'Bearer ' + (JSON.parse(localStorage.getItem('currentUser'))).token
-      })
-    };
-    return this.http.post(this.userService.serverUrl +  '/users/tree-study/edit', object, httpOptions);
   }
 
 }

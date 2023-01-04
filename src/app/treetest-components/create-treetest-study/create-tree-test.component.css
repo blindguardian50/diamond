@@ -31,3 +31,9 @@ textarea {
 }
 
 .not-allowed {cursor: not-allowed; pointer-events: none;}
+
+#finish a {
+    text-decoration: none;
+    font-size: 1rem;
+    text-transform: capitalize;
+}
