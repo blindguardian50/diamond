@@ -40,12 +40,14 @@ import {datePipe} from './pipes/datePipe.pipe';
 import { StudyClosedComponent } from './study-closed/study-closed.component';
 import { LanguageService } from './language.service';
 import { JwtInterceptor } from './jwt.interceptor';
+import { PendingChangesGuard } from './guard';
+
 
 const appRoutes: Routes = [
   { path: 'admin', component: AdminComponent},
-  { path: 'create-tree-test', component: CreateTestComponent},
+  { path: 'create-tree-test', component: CreateTestComponent, canDeactivate: [PendingChangesGuard]},
   { path: 'create-card-sort', component: CreateCardSortComponent},
-  { path: 'create-tree-test/:id', component: CreateTestComponent},
+  { path: 'create-tree-test/:id', component: CreateTestComponent, canDeactivate: [PendingChangesGuard]},
   { path: 'create-card-sort/:id', component: CreateCardSortComponent},
   { path: 'cardsort/:id', component: CardsortStudyComponent},
   { path: 'cardsort-preview/:id', component: CardsortStudyComponent},
@@ -108,7 +110,8 @@ const appRoutes: Routes = [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     // TranslationService,
     LanguageService,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    PendingChangesGuard,
   ],
   bootstrap: [AppComponent]
 })
