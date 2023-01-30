@@ -180,6 +180,7 @@
             </div>            
           </div>
 
+          </div>
         </div>
       </div>
 
@@ -219,6 +220,10 @@
             </table>
 
           </div>
+          <button type="button" class="mt-30 btn btn-warning"  (click)="exportDestinationsCSV()">{{ "exportcsv" | translate }}</button>
+          <button type="button" class="mt-30 btn btn-primary"  (click)="toggleIrrelevantItems()">
+              {{ (irrelevantItemsCollapsed ? "expand" : "collapse") | translate }}
+          </button>
 
         </div>
       </div>
