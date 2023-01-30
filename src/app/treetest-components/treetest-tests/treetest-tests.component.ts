@@ -7,6 +7,13 @@ import { UserService } from '../../user.service';
 
 import { Parser } from '@json2csv/plainjs';
 
+// DBF 358925 START
+
+import {DataService} from '../../data.service';
+
+// DBF 358925 END
+
+
 declare var Chart: any;
 import * as d3 from 'd3';
 import TreeNode from "./TreeNode";
@@ -19,6 +26,13 @@ declare var $: any;
   styleUrls: ['./treetest-tests.component.css', '../../app.component.css']
 })
 export class TreetestTestsComponent implements OnInit {
+
+  // DBF 92835235 START
+
+  message:Array<string>;
+  //constructor(private data: DataService) { } //LR: constructor already declare, added this value to it.
+
+  // DBF 92835235 END
 
   // tslint:disable-next-line:no-string-literal
   id = this.route.snapshot.params['id'];
@@ -62,9 +76,19 @@ export class TreetestTestsComponent implements OnInit {
   deleteParticipantResultIndex;
   irrelevantItemsCollapsed = false;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private userService: UserService) { }
+  // DBF 5922345 START
+
+  // LR: Added private data: DataService, 
+  constructor(private data: DataService, private http: HttpClient, private route: ActivatedRoute, private router: Router, private userService: UserService) { }
 
   ngOnInit() {
+
+    
+
+    this.data.currentMessage.subscribe(message => this.message = message);
+
+    // DBF 5922345 END
+
     $('[data-toggle="tooltip"]').tooltip();
     if (this.id) {
       this.resultsInformation()

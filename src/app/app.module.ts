@@ -40,6 +40,12 @@ import {datePipe} from './pipes/datePipe.pipe';
 import { StudyClosedComponent } from './study-closed/study-closed.component';
 import { LanguageService } from './language.service';
 
+// DBF 98235235 START
+
+import { DataService } from './data.service';
+
+// DBF 98235235 END
+
 const appRoutes: Routes = [
   { path: 'admin', component: AdminComponent},
   { path: 'create-tree-test', component: CreateTestComponent},
@@ -105,6 +111,11 @@ const appRoutes: Routes = [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     // TranslationService,
     LanguageService,
+
+    // DBF 23523985235 START
+    DataService,
+    // DBF 23523985235 END
+
   ],
   bootstrap: [AppComponent]
 })

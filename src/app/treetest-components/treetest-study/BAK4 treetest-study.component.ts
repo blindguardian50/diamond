@@ -21,11 +21,6 @@ declare var $: any;
 })
 export class TreetestStudyComponent implements OnDestroy, OnInit {
 
-  Visi_nodes = [];
-  User_choices_path = [];
-  User_nodes_history = [];
-  Childrens = [];
-
   
   taskIndex = 0;
   tests = [];
@@ -51,20 +46,9 @@ export class TreetestStudyComponent implements OnDestroy, OnInit {
   feedback = "";
   feedbackDone = false;
 
-  // DBF 919152 START
-  // LR: added constructor(private data: DataService) {} 
-  // and the instantiation of the arrays
-  constructor(private data:DataService, private http: HttpClient, private route: ActivatedRoute, private router: Router, private userService: UserService) { 
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private userService: UserService) { 
     var date = (new Date()).toISOString().slice(0, 19).replace(/-/g, "-").replace("T", " ");
-
-    // LR: probably not needed
-    this.Visi_nodes = [];
-    this.User_choices_path = [];
-    this.User_nodes_history = [];
-    this.Childrens = [];
-
   }
-  // DBF 919152 END
 
   getTestData() {
     /*const header = new Headers({ Authorization: 'Bearer ' + (JSON.parse(localStorage.getItem('currentUser'))).token});*/
@@ -164,13 +148,7 @@ export class TreetestStudyComponent implements OnDestroy, OnInit {
   }
 
   submitFinalAnswer(index, skipped) {
-    // DBF 9023535221 START
-    if (this && this.User_nodes_history && this.User_nodes_history.length === 0) {
-      console.log("submitFinalAnswer() consistency check passed");      
-    }
-
-    this.data.changeMessage(this.User_choices_path);
-    // DBF 9023535221 END    
+    this.message = User_choices_path;
     
 
     const instance = $('#study-tree').jstree(true);
@@ -234,10 +212,10 @@ export class TreetestStudyComponent implements OnDestroy, OnInit {
     setTimeout(() => {
 
   // DBF 06932 START  
-  // var Visi_nodes = [];
-  // var User_choices_path = [];
-  // var User_nodes_history = [];
-  // var Childrens = [];
+  var Visi_nodes = [];
+  var User_choices_path = [];
+  var User_nodes_history = [];
+  var Childrens = [];
   // DBF 06932 END
 
 
@@ -255,7 +233,7 @@ export class TreetestStudyComponent implements OnDestroy, OnInit {
                   var childNode = tree.get_node(node.children[i]);
                   //console.log("pushing this child node: ", childNode.id);
                   
-                  this.Childrens.push(childNode.id);
+                  Childrens.push(childNode.id);
                   tree.show_node(childNode);
 
                   getChildrenOfNode(childNode, tree);
@@ -270,7 +248,7 @@ export class TreetestStudyComponent implements OnDestroy, OnInit {
           const parent_node = tree.get_node(node.parent);
 
           if(node.parent){
-              this.Visi_nodes.push(node.parent);
+              Visi_nodes.push(node.parent);
               getPathToRoot(parent_node,tree);
           }
         }
@@ -426,18 +404,18 @@ export class TreetestStudyComponent implements OnDestroy, OnInit {
 
           // closeAllChildren(data.node,tree)
           // showAllParentNodes(data.node, tree);
-          if(this.User_nodes_history[this.User_nodes_history.length - 1] === data.node){
+          if(User_nodes_history[User_nodes_history.length - 1] === data.node){
 
-            this.User_nodes_history.push(data.node);
-            this.User_choices_path.push("T");  
-            this.User_choices_path.push(data.node.text);    
-            console.log("usr choices: ", this.User_choices_path);              
+            User_nodes_history.push(data.node);
+            User_choices_path.push("T");  
+            User_choices_path.push(data.node.text);    
+            console.log("usr choices: ", User_choices_path);              
 
           }else{
-            this.User_nodes_history.push(data.node);
-            this.User_choices_path.push("<");  
-            this.User_choices_path.push(data.node.text);    
-            console.log("usr choices: ", this.User_choices_path);  
+            User_nodes_history.push(data.node);
+            User_choices_path.push("<");  
+            User_choices_path.push(data.node.text);    
+            console.log("usr choices: ", User_choices_path);  
           }
 
         });
@@ -456,87 +434,66 @@ export class TreetestStudyComponent implements OnDestroy, OnInit {
           // showAllParentNodes(data.node, tree);
           
           if(!data.node.children.length){
-            this.User_nodes_history.push(data.node);
-            this.User_choices_path.push("S");  
-            this.User_choices_path.push(data.node.text);    
-            console.log("usr choices: ", this.User_choices_path);  
+            User_nodes_history.push(data.node);
+            User_choices_path.push("S");  
+            User_choices_path.push(data.node.text);    
+            console.log("usr choices: ", User_choices_path);  
           }          
         });
 
         $("#study-tree").on("open_node.jstree", function(e, data){
-          
+
           console.log("evt open_node");
 
           var tree = $('#study-tree').jstree(true);
 
-
-          // Consistency checks.
-          if(this){
-            console.log("open_node 'this' check passed");                  
-          }
-
-          if(this.User_nodes_history){
-            console.log("open_node 'this.User_nodes_history' check passed");                  
-          }
-
-          if(this.User_nodes_history){
-            console.log("open_node 'this.User_nodes_history' check passed");                  
-          }
-          
-          if (this && this.User_nodes_history && this.User_nodes_history.length === 0) {
-            console.log("open_node consistency check passed");      
-          }
-
-
-
-
-          if(this.User_nodes_history.length === 0){
+          if(User_nodes_history.length === 0){
               const root = tree.get_node("#");
-              this.User_nodes_history.push(root);
-              this.User_choices_path.push("#");  
+              User_nodes_history.push(root);
+              User_choices_path.push("#");  
 
-              console.log("init hist 1: ", this.User_nodes_history);
-              console.log("init path 2: ", this.User_choices_path);
+              console.log("init hist 1: ", User_nodes_history);
+              console.log("init path 2: ", User_choices_path);
           
           }
 
-          if(this.User_nodes_history[this.User_nodes_history.length - 1] === data.node && this.User_choices_path[this.User_choices_path.length - 1] != "#"){
-            this.User_nodes_history.push(data.node);
-            this.User_choices_path.push("T");  
+          if(User_nodes_history[User_nodes_history.length - 1] === data.node && User_choices_path[User_choices_path.length - 1] != "#"){
+            User_nodes_history.push(data.node);
+            User_choices_path.push("T");  
             console.log("open toggle");
             
-            this.User_choices_path.push(data.node.text);    
-            console.log("usr choices: ", this.User_choices_path); 
+            User_choices_path.push(data.node.text);    
+            console.log("usr choices: ", User_choices_path); 
             return;             
           }
 
 
 
-          this.User_nodes_history.push(data.node);
+          User_nodes_history.push(data.node);
 
           //console.log("usr choices: ", User_choices_path);  
               
-          getChildrenOfNode(this.User_nodes_history.slice(-2)[0], tree);
+          getChildrenOfNode(User_nodes_history.slice(-2)[0], tree);
 
           //console.log("user nodes history: ", User_nodes_history);
           //console.log("children of last traveled node: ", Childrens);
           //console.log("node clicked now: ", data.node.id);
                  
-          if(this.Childrens.includes(data.node.id)){
+          if(Childrens.includes(data.node.id)){
               //console.log("usr clicked on child of last node");
-              this.User_choices_path.push(">");  
-              this.User_choices_path.push(data.node.text);
+              User_choices_path.push(">");  
+              User_choices_path.push(data.node.text);
           }else{
-              this.User_choices_path.push("<");  
-              this.User_choices_path.push(data.node.text); 
+              User_choices_path.push("<");  
+              User_choices_path.push(data.node.text); 
           }
 
-          this.Childrens.length = 0;
+          Childrens.length = 0;
 
           //console.log("last node was: ", User_nodes_history.slice(-1)[0] );
           //console.log("user nodes history: ", User_nodes_history);
           
-          console.log("user choices path: ", this.User_choices_path);
+          console.log("user choices path: ", User_choices_path);
 
         });
 

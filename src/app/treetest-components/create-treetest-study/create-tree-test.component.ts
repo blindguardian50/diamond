@@ -269,9 +269,15 @@ export class CreateTestComponent implements OnInit {
         }
       },
       plugins : [
-        'contextmenu', 'dnd', 'search',
-        'state', 'types', 'wholerow'
+        'contextmenu', 'search',
+        'state', 'types',
       ]
+
+      // plugins : [
+      //   'contextmenu', 'dnd', 'search',
+      //   'state', 'types', 'wholerow'
+      // ]
+
     });
 
     //if (!this.answerTreeCreated) {

@@ -151,6 +151,31 @@
               </div>
               </div>
 
+              <!-- DBF 32592436 START -->
+
+              <table *ngIf="tests.length" class="table table-bordered mt-30">
+                <thead>
+                  <tr>
+                    <h1>{{this.message}}</h1>
+                    <th style="width: 350px"></th>
+                    <th class="text-center" style="width: 25px" *ngFor="let t of study.tasks; let i = index;">{{i+1}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of treemap.getDepthFirstArray(); let j = index;" >
+                        <tr *ngIf="!irrelevantItemDisabled(item)">
+                            <td *ngIf="item.data.data" [style.padding-left.px]="item.data.data.index*25 + 5">{{item.data.text}}</td>
+                            <td *ngIf="!item.data.data">{{item.data.text}}</td>
+                            <td class="text-center" *ngFor="let task of destinations; let k = index;">
+                                <div  [ngStyle]="{ 'background-color' : getBackgroundColor(k, j, task[item.data.id], item.data.id)}">{{task[item.data.id]}}</div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+              </table>
+
+              <!-- DBF 32592436 END -->
+
               <!-- <button type="button" class="btn btn-warning"  data-toggle="modal" data-target="#pathTree" (click)="preparePathTree(i)">Path Tree</button> -->
 
               <button type="button" class="btn btn-primary"  (click)="openPathTree(i)">Path Tree</button>
@@ -180,6 +205,7 @@
           <table *ngIf="tests.length" class="table table-bordered mt-30">
             <thead>
               <tr>
+                <h1>DBF 235235 THIS IS A DYNAMIC TABLE</h1>
                 <th style="width: 350px"></th>
                 <th class="text-center" style="width: 25px" *ngFor="let t of study.tasks; let i = index;">{{i+1}}</th>
               </tr>
