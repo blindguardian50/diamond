@@ -280,51 +280,7 @@ export class TreetestTestsComponent implements OnInit {
     
     this.destinationTable();
 
-    this.firstClickStatistic();
-    
-  }
-
-  firstClickStatistic(){
-
-    // Returns the most frequently occuring string in a list.
-    function mode(arr){
-      return arr.sort((a,b) =>
-            arr.filter(v => v===a).length
-          - arr.filter(v => v===b).length
-      ).pop();
-    }
-
-    for(let i = 0; i < this.tasks.length; i++){
-
-      let firstClicks = [];
-
-      // Get most first clicked node.
-      for(let j = 0; j < this.paths.length; j++){
-        firstClicks.push(this.paths[j].paths[i][0].node.data.text);
-      }
-
-      const mostFirstClicked = mode(firstClicks); 
-      let firstClickedNrOfTimes = 0;
-
-      // Get nr of clicks for this node name.
-      for(let j = 0; j < this.paths.length; j++){
-        if(this.paths[j].paths[i][0].node.data.text === mostFirstClicked){
-          firstClickedNrOfTimes += 1;
-        }
-      }            
-
-      const percentageFirstClicked = Math.floor((firstClickedNrOfTimes * 100) / this.paths.length);      
-
-      // Save first click for this task. 
-      // [0] is string, [1] nr of clicks, [2] percentage
-      let firstClicksForThisTask = [];
-      firstClicksForThisTask.push(mostFirstClicked);
-      firstClicksForThisTask.push(firstClickedNrOfTimes);
-      firstClicksForThisTask.push(percentageFirstClicked);
-
-      // This container is used by Angular in the frontend.
-      this.firstClicks.push(firstClicksForThisTask);
-    }
+    this.destinationTable();
   }
 
   preparePathTree(index) {
