@@ -141,5 +141,11 @@
     "skipped": "Skipped",
     "back": "Back",
     "copy": "Copy",
-    "new": "New"
+    "new": "New",
+    "firstclick": "First Click",
+    "pathchosen" : "Chosen Paths History",
+    "name" : "Name",
+    "path" : "Path",
+    "pathhistory" : "Path History",
+    "pathtree" : "Path Tree"
 }
